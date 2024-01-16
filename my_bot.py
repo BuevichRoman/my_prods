@@ -35,7 +35,7 @@ async def dollar(message: types.Message):
     dol = soup.find("div", class_="finance-currency-plate__col finance-currency-plate__col--value-tomorrow")
     dollar = dol.find("div", class_="finance-currency-plate__currency")
     await message.answer(text=dollar.text)
-
+#функция команы евро
 @dp.message(Command("eur"))
 async def euro(message: types.Message):
     html = urlopen("https://finance.rambler.ru/currencies/EUR/").read().decode('utf-8')
@@ -44,6 +44,15 @@ async def euro(message: types.Message):
     ev= soup.find("div", class_="finance-currency-plate__col finance-currency-plate__col--value-tomorrow")
     euro = ev.find("div", class_="finance-currency-plate__currency")
     await message.answer(text=euro.text)
+
+#функция команды погода
+@dp.message(Command("weather"))
+async def weather(message: types.Message):
+    html = urlopen("https://ru-meteo.ru/moscow/detail").read().decode('utf-8')
+    s = str(html)
+    soup = BeautifulSoup(s, 'html.parser')
+    weather = soup.find("td", class_="big t-4")
+    await message.answer(text=weather.text)
 
 
 # функция - отвечает вашим же сообщением

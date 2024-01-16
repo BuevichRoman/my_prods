@@ -5,6 +5,9 @@ from aiogram.enums import ParseMode
 import asyncio
 import logging
 import config
+from bs4 import BeautifulSoup
+from urllib.request import urlopen
+
 
 
 # создание диспетчера
@@ -22,6 +25,17 @@ async def start(message: types.Message):
 async def help(message: types.Message):
     text = "i'm an echo bot, send me any message"
     await message.answer(text=text)
+
+#функия команды доллар
+@dp.message(Command("dollar"))
+async def dollar(message: types.Message):
+    html = urlopen("https://finance.rambler.ru/currencies/USD/").read().decode('utf-8')
+    s = str(html)
+    soup = BeautifulSoup(s, 'html.parser')
+    dol = soup.find("div", class_="finance-currency-plate__col finance-currency-plate__col--value-tomorrow")
+    dollar = dol.find("div", class_="finance-currency-plate__currency")
+    await message.answer(text=dollar.text)
+
 
 # функция - отвечает вашим же сообщением
 @dp.message()

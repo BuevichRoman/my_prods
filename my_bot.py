@@ -27,7 +27,7 @@ async def help(message: types.Message):
     await message.answer(text=text)
 
 #функия команды доллар
-@dp.message(Command("dollar"))
+@dp.message(Command("usd"))
 async def dollar(message: types.Message):
     html = urlopen("https://finance.rambler.ru/currencies/USD/").read().decode('utf-8')
     s = str(html)
@@ -35,6 +35,15 @@ async def dollar(message: types.Message):
     dol = soup.find("div", class_="finance-currency-plate__col finance-currency-plate__col--value-tomorrow")
     dollar = dol.find("div", class_="finance-currency-plate__currency")
     await message.answer(text=dollar.text)
+
+@dp.message(Command("eur"))
+async def euro(message: types.Message):
+    html = urlopen("https://finance.rambler.ru/currencies/EUR/").read().decode('utf-8')
+    s = str(html)
+    soup = BeautifulSoup(s, 'html.parser')
+    ev= soup.find("div", class_="finance-currency-plate__col finance-currency-plate__col--value-tomorrow")
+    euro = ev.find("div", class_="finance-currency-plate__currency")
+    await message.answer(text=euro.text)
 
 
 # функция - отвечает вашим же сообщением
